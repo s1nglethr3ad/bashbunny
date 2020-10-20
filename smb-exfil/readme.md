@@ -1,6 +1,6 @@
 # Faster SMB Exfiltrator
-
-* Author: Hak5Darren
+* Tweeker:  s1nglethr3ad
+* Original Author: Hak5Darren
 * Props: ImNatho, mike111b, madbuda
 * Version: Version 1.0
 * Target: Windows XP SP3+ (Powershell)
@@ -8,7 +8,7 @@
 * Attackmodes: HID, Ethernet
  
 ## Description
-
+### Fixed constant blue light blinking - s1nglethr3ad
 Exfiltrates select files from users's documents folder via SMB.
 Liberated documents will reside in Bash Bunny loot directory under loot/smb_exfiltrator/HOSTNAME/DATE_TIME
 
